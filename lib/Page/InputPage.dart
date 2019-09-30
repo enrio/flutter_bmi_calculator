@@ -1,12 +1,9 @@
+import 'package:bmi_calculator/Page/GenderEnum.dart';
+import 'package:bmi_calculator/component/AppViewCard.dart';
+import 'package:bmi_calculator/component/GenderCardIcon.dart';
+import 'package:bmi_calculator/component/app_const.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-// App const
-const cardBackgroundColor = Color(0xff1d1f33);
-const textActiveColor = Color(0xffFFFFFF);
-const textInactiveColor = Color(0xff8E8E99);
-
-const buttonColor = Color(0xffEA1556);
 
 class InputPage extends StatefulWidget {
   @override
@@ -14,6 +11,8 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
+  GenderEnum gender = GenderEnum.male;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,24 +27,33 @@ class _InputPageState extends State<InputPage> {
                   children: <Widget>[
                     Expanded(
                       child: GestureDetector(
-                          onTap: (){
-                              print("Male tapped");
-                          } ,
+                        onTap: () {
+                          setState(() {
+                            _changeGender();
+                          });
+                        },
                         child: AppViewCard(
-                          color: cardBackgroundColor,
+                          color: APP_CONST.card_background_active_color,
                           child: GenderCardIcon(
-                            isMale: true,
-                            isActive: true,
+                            cardGender: GenderEnum.male,
+                            activeGender: gender,
                           ),
                         ),
                       ),
                     ),
                     Expanded(
-                      child: AppViewCard(
-                        color: cardBackgroundColor,
-                        child: GenderCardIcon(
-                          isMale: false,
-                          isActive: false,
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _changeGender();
+                          });
+                        },
+                        child: AppViewCard(
+                          color: APP_CONST.card_background_active_color,
+                          child: GenderCardIcon(
+                            cardGender: GenderEnum.female,
+                            activeGender: gender,
+                          ),
                         ),
                       ),
                     )
@@ -54,7 +62,7 @@ class _InputPageState extends State<InputPage> {
               ),
               Expanded(
                 child: AppViewCard(
-                  color: cardBackgroundColor,
+                  color: APP_CONST.card_background_active_color,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -62,7 +70,7 @@ class _InputPageState extends State<InputPage> {
                         "Height",
                         style: TextStyle(
                           fontSize: 18.0,
-                          color: textInactiveColor,
+                          color: APP_CONST.text_inactive_color,
                         ),
                       ),
                       SizedBox(
@@ -76,7 +84,7 @@ class _InputPageState extends State<InputPage> {
                             "180",
                             style: TextStyle(
                                 fontSize: 60,
-                                color: textActiveColor,
+                                color: APP_CONST.text_active_color,
                                 fontWeight: FontWeight.bold),
                           ),
                           Padding(
@@ -84,7 +92,8 @@ class _InputPageState extends State<InputPage> {
                             child: Text(
                               "cm",
                               style: TextStyle(
-                                  fontSize: 18, color: textInactiveColor),
+                                  fontSize: 18,
+                                  color: APP_CONST.text_inactive_color),
                             ),
                           ),
                         ],
@@ -96,8 +105,8 @@ class _InputPageState extends State<InputPage> {
                           max: 250,
                           value: 180,
                           onChanged: (double value) {},
-                          activeColor: buttonColor,
-                          inactiveColor: textInactiveColor,
+                          activeColor: APP_CONST.button_color,
+                          inactiveColor: APP_CONST.text_inactive_color,
                         ),
                       ),
                     ],
@@ -109,14 +118,14 @@ class _InputPageState extends State<InputPage> {
                   children: <Widget>[
                     Expanded(
                       child: AppViewCard(
-                        color: cardBackgroundColor,
+                        color: APP_CONST.card_background_active_color,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
                               "Weight",
                               style: TextStyle(
-                                color: textInactiveColor,
+                                color: APP_CONST.text_inactive_color,
                                 fontSize: 18.0,
                               ),
                             ),
@@ -126,7 +135,7 @@ class _InputPageState extends State<InputPage> {
                             Text(
                               "65",
                               style: TextStyle(
-                                color: textActiveColor,
+                                color: APP_CONST.text_active_color,
                                 fontSize: 60,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -157,21 +166,21 @@ class _InputPageState extends State<InputPage> {
                     ),
                     Expanded(
                       child: AppViewCard(
-                        color: cardBackgroundColor,
+                        color: APP_CONST.card_background_active_color,
                       ),
                     )
                   ],
                 ),
               ),
               Container(
-                color: buttonColor,
+                color: APP_CONST.button_color,
                 height: 80.0,
                 padding: EdgeInsets.only(top: 5),
                 child: Center(
                   child: Text(
                     "Calculate",
                     style: TextStyle(
-                      color: textActiveColor,
+                      color: APP_CONST.text_inactive_color,
                       fontSize: 32.0,
                     ),
                   ),
@@ -181,53 +190,8 @@ class _InputPageState extends State<InputPage> {
           ),
         ));
   }
-}
 
-class GenderCardIcon extends StatelessWidget {
-  final bool isMale;
-  final bool isActive;
-
-  GenderCardIcon({this.isMale, this.isActive});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Icon(
-          isMale ? FontAwesomeIcons.mars : FontAwesomeIcons.venus,
-          size: 80.0,
-          color: isActive ? textActiveColor : textInactiveColor,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          isMale ? "Male" : "Female",
-          style: TextStyle(
-            fontSize: 32.0,
-            color: isActive ? textActiveColor : textInactiveColor,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class AppViewCard extends StatelessWidget {
-  final Color color;
-
-  final Widget child;
-
-  AppViewCard({@required this.color, this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: child,
-      margin: EdgeInsets.all(15.0),
-      decoration: BoxDecoration(
-          color: color, borderRadius: BorderRadius.circular(10.0)),
-    );
+  void _changeGender() {
+    gender = gender == GenderEnum.male ? GenderEnum.female : GenderEnum.male;
   }
 }
