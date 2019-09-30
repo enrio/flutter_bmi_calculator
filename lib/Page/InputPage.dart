@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-const bottomContainerHeight = 80.0;
-const colorCard = Color(0xff1d1f33);
-const colorButton = Color(0xffea1556);
+// App const
+const cardBackgroundColor = Color(0xff1d1f33);
+const textActiveColor = Color(0xffFFFFFF);
+const textInactiveColor = Color(0xff8E8E99);
 
-const colorCardTitleActive = Color(0xfffeffff);
-const colorCardTitleInactive = Color(0xff8e8f99);
+const buttonColor = Color(0xffEA1556);
 
 class InputPage extends StatefulWidget {
   @override
@@ -27,22 +27,25 @@ class _InputPageState extends State<InputPage> {
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      child: AppViewCard(
-                        color: colorCard,
-                        child: GenderIcon(
-                          color: colorCardTitleActive,
-                          icon: FontAwesomeIcons.mars,
-                          title: "Male",
+                      child: GestureDetector(
+                          onTap: (){
+                              print("Male tapped");
+                          } ,
+                        child: AppViewCard(
+                          color: cardBackgroundColor,
+                          child: GenderCardIcon(
+                            isMale: true,
+                            isActive: true,
+                          ),
                         ),
                       ),
                     ),
                     Expanded(
                       child: AppViewCard(
-                        color: colorCard,
-                        child: GenderIcon(
-                          color: colorCardTitleInactive,
-                          icon: FontAwesomeIcons.venus,
-                          title: "Female",
+                        color: cardBackgroundColor,
+                        child: GenderCardIcon(
+                          isMale: false,
+                          isActive: false,
                         ),
                       ),
                     )
@@ -51,52 +54,51 @@ class _InputPageState extends State<InputPage> {
               ),
               Expanded(
                 child: AppViewCard(
-                  color: colorCard,
+                  color: cardBackgroundColor,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
                         "Height",
                         style: TextStyle(
-                            color: colorCardTitleInactive, fontSize: 18.0),
+                          fontSize: 18.0,
+                          color: textInactiveColor,
+                        ),
                       ),
                       SizedBox(
-                        height: 5.0,
                         width: double.infinity,
+                        height: 5.0,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Text(
                             "180",
                             style: TextStyle(
-                              fontSize: 56,
-                              color: colorCardTitleActive,
-                            ),
+                                fontSize: 60,
+                                color: textActiveColor,
+                                fontWeight: FontWeight.bold),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(top: 25.0),
+                            padding: EdgeInsets.only(top: 30.0),
                             child: Text(
                               "cm",
                               style: TextStyle(
-                                color: colorCardTitleInactive,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                                  fontSize: 18, color: textInactiveColor),
                             ),
-                          )
+                          ),
                         ],
-                      ), // 180cm
-                      SizedBox(height: 5.0),
-                      Slider(
-                        min: 0,
-                        max: 250,
-                        value: 180,
-                        onChanged: null,
-                        activeColor: colorButton,
-                        inactiveColor: colorCardTitleActive,
-                        divisions: 3,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                        child: Slider(
+                          min: 0,
+                          max: 250,
+                          value: 180,
+                          onChanged: (double value) {},
+                          activeColor: buttonColor,
+                          inactiveColor: textInactiveColor,
+                        ),
                       ),
                     ],
                   ),
@@ -107,104 +109,85 @@ class _InputPageState extends State<InputPage> {
                   children: <Widget>[
                     Expanded(
                       child: AppViewCard(
-                        color: colorCard,
+                        color: cardBackgroundColor,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text("Weight",
-                                style: TextStyle(
-                                  color: colorCardTitleInactive,
-                                  fontSize: 18.0,
-                                )),
-                            SizedBox(
-                              height: 5.0,
+                            Text(
+                              "Weight",
+                              style: TextStyle(
+                                color: textInactiveColor,
+                                fontSize: 18.0,
+                              ),
                             ),
-                            Text("74",
-                                style: TextStyle(
-                                  color: colorCardTitleActive,
-                                  fontSize: 56.0,
-                                  fontWeight: FontWeight.bold,
-                                )),
                             SizedBox(
-                              height: 5.0,
+                              height: 0.0,
+                            ),
+                            Text(
+                              "65",
+                              style: TextStyle(
+                                color: textActiveColor,
+                                fontSize: 60,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 0.0,
+                              width: double.infinity,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 IconButton(
-                                  icon: Icon(FontAwesomeIcons.minus),
-                                  onPressed: null,
+                                  icon: Icon(
+                                    FontAwesomeIcons.minus,
+                                    size: 32,
+                                  ),
+                                  color: Color(0xff101427),
                                 ),
-                                IconButton(
-                                  icon: Icon(FontAwesomeIcons.plus),
-                                  onPressed: null,
+                                Icon(
+                                  FontAwesomeIcons.plus,
+                                  size: 32,
                                 ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                       ),
                     ),
                     Expanded(
                       child: AppViewCard(
-                        color: colorCard,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text("Age",
-                                style: TextStyle(
-                                  color: colorCardTitleInactive,
-                                  fontSize: 18.0,
-                                )),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Text("25",
-                                style: TextStyle(
-                                  color: colorCardTitleActive,
-                                  fontSize: 56.0,
-                                  fontWeight: FontWeight.bold,
-                                )),
-                            SizedBox(
-                              height: 5.0,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                IconButton(
-                                  icon: Icon(FontAwesomeIcons.minus),
-                                  onPressed: null,
-                                ),
-                                IconButton(
-                                  icon: Icon(FontAwesomeIcons.plus),
-                                  onPressed: null,
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
+                        color: cardBackgroundColor,
                       ),
                     )
                   ],
                 ),
               ),
               Container(
-                color: colorButton,
-                margin: EdgeInsets.only(top: 10.0),
-                height: bottomContainerHeight,
-              ),
+                color: buttonColor,
+                height: 80.0,
+                padding: EdgeInsets.only(top: 5),
+                child: Center(
+                  child: Text(
+                    "Calculate",
+                    style: TextStyle(
+                      color: textActiveColor,
+                      fontSize: 32.0,
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ));
   }
 }
 
-class GenderIcon extends StatelessWidget {
-  final Color color;
-  final IconData icon;
-  final String title;
+class GenderCardIcon extends StatelessWidget {
+  final bool isMale;
+  final bool isActive;
 
-  GenderIcon({@required this.icon, @required this.title, @required this.color});
+  GenderCardIcon({this.isMale, this.isActive});
 
   @override
   Widget build(BuildContext context) {
@@ -212,27 +195,28 @@ class GenderIcon extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Icon(
-          icon,
+          isMale ? FontAwesomeIcons.mars : FontAwesomeIcons.venus,
           size: 80.0,
-          color: color,
+          color: isActive ? textActiveColor : textInactiveColor,
         ),
         SizedBox(
-          height: 10.0,
+          height: 10,
         ),
         Text(
-          title,
-          style: TextStyle(color: color, fontSize: 18.0),
-        )
+          isMale ? "Male" : "Female",
+          style: TextStyle(
+            fontSize: 32.0,
+            color: isActive ? textActiveColor : textInactiveColor,
+          ),
+        ),
       ],
     );
   }
 }
 
 class AppViewCard extends StatelessWidget {
-  // const AppViewCard({
-  //   Key key,
-  // }) : super(key: key);
   final Color color;
+
   final Widget child;
 
   AppViewCard({@required this.color, this.child});
