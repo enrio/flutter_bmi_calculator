@@ -3,7 +3,6 @@ import 'package:bmi_calculator/component/AppViewCard.dart';
 import 'package:bmi_calculator/component/GenderCardIcon.dart';
 import 'package:bmi_calculator/component/app_const.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class InputPage extends StatefulWidget {
   @override
@@ -12,7 +11,9 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   GenderEnum gender = GenderEnum.male;
-
+  int height = 180;
+  int weight = 55;
+  int age = 25;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,39 +22,28 @@ class _InputPageState extends State<InputPage> {
         ),
         body: SafeArea(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Expanded(
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _changeGender();
-                          });
-                        },
-                        child: AppViewCard(
-                          color: APP_CONST.card_background_active_color,
-                          child: GenderCardIcon(
-                            cardGender: GenderEnum.male,
-                            activeGender: gender,
-                          ),
+                      child: AppViewCard(
+                        onPress: _changeGender,
+                        color: kCardBackgroundActiveColor,
+                        child: GenderCardIcon(
+                          cardGender: GenderEnum.male,
+                          activeGender: gender,
                         ),
                       ),
                     ),
                     Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _changeGender();
-                          });
-                        },
-                        child: AppViewCard(
-                          color: APP_CONST.card_background_active_color,
-                          child: GenderCardIcon(
-                            cardGender: GenderEnum.female,
-                            activeGender: gender,
-                          ),
+                      child: AppViewCard(
+                        onPress: _changeGender,
+                        color: kCardBackgroundActiveColor,
+                        child: GenderCardIcon(
+                          cardGender: GenderEnum.female,
+                          activeGender: gender,
                         ),
                       ),
                     )
@@ -62,51 +52,59 @@ class _InputPageState extends State<InputPage> {
               ),
               Expanded(
                 child: AppViewCard(
-                  color: APP_CONST.card_background_active_color,
+                  color: kCardBackgroundActiveColor,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
                         "Height",
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          color: APP_CONST.text_inactive_color,
-                        ),
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 5.0,
+                        style: kLabeTextStyle.copyWith(fontSize: 18),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        textBaseline: TextBaseline.alphabetic,
                         children: <Widget>[
                           Text(
-                            "180",
+                            height.toString(),
                             style: TextStyle(
-                                fontSize: 60,
-                                color: APP_CONST.text_active_color,
-                                fontWeight: FontWeight.bold),
+                              fontSize: 60,
+                              color: kTextActiveColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 30.0),
-                            child: Text(
-                              "cm",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: APP_CONST.text_inactive_color),
+                          Text(
+                            "cm",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: kTextInactiveColor,
                             ),
                           ),
                         ],
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 10.0, right: 10.0),
-                        child: Slider(
-                          min: 0,
-                          max: 250,
-                          value: 180,
-                          onChanged: (double value) {},
-                          activeColor: APP_CONST.button_color,
-                          inactiveColor: APP_CONST.text_inactive_color,
+                        child: SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                              activeTrackColor: Colors.white,
+                              thumbColor: Color(0xffEB1555),
+                              overlayColor: Color(0x29EB1555),
+                              thumbShape: RoundSliderThumbShape(
+                                  enabledThumbRadius: 15.0),
+                              overlayShape:
+                                  RoundSliderOverlayShape(overlayRadius: 25.0)),
+                          child: Slider(
+                            min: 80,
+                            max: 300,
+                            value: height.toDouble(),
+                            onChanged: (double value) {
+                              setState(() {
+                                height = value.round();
+                              });
+                            },
+                            activeColor: kButtonColor,
+                            inactiveColor: kTextInactiveColor,
+                          ),
                         ),
                       ),
                     ],
@@ -118,14 +116,14 @@ class _InputPageState extends State<InputPage> {
                   children: <Widget>[
                     Expanded(
                       child: AppViewCard(
-                        color: APP_CONST.card_background_active_color,
+                        color: kCardBackgroundActiveColor,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
                               "Weight",
                               style: TextStyle(
-                                color: APP_CONST.text_inactive_color,
+                                color: kTextInactiveColor,
                                 fontSize: 18.0,
                               ),
                             ),
@@ -133,9 +131,9 @@ class _InputPageState extends State<InputPage> {
                               height: 0.0,
                             ),
                             Text(
-                              "65",
+                              weight.toString(),
                               style: TextStyle(
-                                color: APP_CONST.text_active_color,
+                                color: kTextActiveColor,
                                 fontSize: 60,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -147,16 +145,16 @@ class _InputPageState extends State<InputPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                IconButton(
-                                  icon: Icon(
-                                    FontAwesomeIcons.minus,
-                                    size: 32,
-                                  ),
-                                  color: Color(0xff101427),
+                                RoundIconButton(
+                                  icon: Icons.remove,
+                                  onPressed: addWeight,
                                 ),
-                                Icon(
-                                  FontAwesomeIcons.plus,
-                                  size: 32,
+                                SizedBox(
+                                  width: 5.0,
+                                ),
+                                RoundIconButton(
+                                  icon: Icons.add,
+                                  onPressed: removeWeight,
                                 ),
                               ],
                             ),
@@ -166,22 +164,70 @@ class _InputPageState extends State<InputPage> {
                     ),
                     Expanded(
                       child: AppViewCard(
-                        color: APP_CONST.card_background_active_color,
+                        color: kCardBackgroundActiveColor,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "Age",
+                              style: TextStyle(
+                                color: kTextInactiveColor,
+                                fontSize: 18.0,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 0.0,
+                            ),
+                            Text(
+                              age.toString(),
+                              style: TextStyle(
+                                color: kTextActiveColor,
+                                fontSize: 60,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 0.0,
+                              width: double.infinity,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                RoundIconButton(
+                                  icon: Icons.remove,
+                                  onPressed: addAge,
+                                ),
+                                SizedBox(
+                                  width: 5.0,
+                                ),
+                                RoundIconButton(
+                                  icon: Icons.add,
+                                  onPressed: removeAge,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   ],
                 ),
               ),
-              Container(
-                color: APP_CONST.button_color,
-                height: 80.0,
-                padding: EdgeInsets.only(top: 5),
-                child: Center(
-                  child: Text(
-                    "Calculate",
-                    style: TextStyle(
-                      color: APP_CONST.text_inactive_color,
-                      fontSize: 32.0,
+              GestureDetector(
+                onTap: () {
+                  print("Tapped calc");
+                },
+                child: Container(
+                  color: kButtonColor,
+                  height: 65.0,
+                  padding: EdgeInsets.only(top: 5),
+                  child: Center(
+                    child: Text(
+                      "Calculate",
+                      style: TextStyle(
+                        color: kTextActiveColor,
+                        fontSize: 32.0,
+                      ),
                     ),
                   ),
                 ),
@@ -192,6 +238,56 @@ class _InputPageState extends State<InputPage> {
   }
 
   void _changeGender() {
-    gender = gender == GenderEnum.male ? GenderEnum.female : GenderEnum.male;
+    setState(() {
+      gender = gender == GenderEnum.male ? GenderEnum.female : GenderEnum.male;
+    });
+  }
+
+  void addWeight() {
+    setState(() {
+      weight += 1;
+    });
+  }
+
+  void removeWeight() {
+    setState(() {
+      weight -= 1;
+    });
+  }
+
+  void addAge() {
+    setState(() {
+      age += 1;
+    });
+  }
+
+  void removeAge() {
+    setState(() {
+      age -= 1;
+    });
+  }
+}
+
+class RoundIconButton extends StatelessWidget {
+  final IconData icon;
+  final Function onPressed;
+  RoundIconButton({this.icon, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      onPressed: onPressed,
+      elevation: 0.0,
+      child: Icon(
+        icon,
+        size: 42.0,
+      ),
+      constraints: BoxConstraints.tightFor(
+        width: 56.0,
+        height: 56.0,
+      ),
+      shape: CircleBorder(),
+      fillColor: Color(0xFF4c4f5e),
+    );
   }
 }

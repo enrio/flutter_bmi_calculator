@@ -20,19 +20,18 @@ class GenderCardIcon extends StatelessWidget {
               : FontAwesomeIcons.venus,
           size: 80.0,
           color: activeGender == cardGender
-              ? APP_CONST.text_active_color
-              : APP_CONST.text_inactive_color,
+              ? kTextActiveColor
+              : kTextInactiveColor,
         ),
         SizedBox(
           height: 10,
         ),
         Text(
           cardGender == GenderEnum.male ? "Male" : "Female",
-          style: TextStyle(
-            fontSize: 32.0,
+          style: kLabeTextStyle.copyWith(
             color: activeGender == cardGender
-                ? APP_CONST.text_active_color
-                : APP_CONST.text_inactive_color,
+                ? kTextActiveColor
+                : kTextInactiveColor,
           ),
         ),
       ],
