@@ -11,3 +11,7 @@ const kLabeTextStyle = TextStyle(
   fontSize: 32.0,
   color: kTextActiveColor,
 );
+
+const kTitleTextStyleLarge = TextStyle(
+  fontSize: 30.0,
+);

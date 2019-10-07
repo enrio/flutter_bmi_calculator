@@ -1,19 +1,21 @@
 import 'package:bmi_calculator/Page/GenderEnum.dart';
-import 'package:bmi_calculator/component/AppViewCard.dart';
-import 'package:bmi_calculator/component/GenderCardIcon.dart';
-import 'package:bmi_calculator/component/app_const.dart';
+import 'package:bmi_calculator/Page/ResultPage.dart';
+
+import './../Model/PersonInfomation.dart';
+import './../component/AppViewCard.dart';
+import './../component/GenderCardIcon.dart';
+import './../component/app_const.dart';
 import 'package:flutter/material.dart';
 
-class InputPage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _InputPageState createState() => _InputPageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _InputPageState extends State<InputPage> {
-  GenderEnum gender = GenderEnum.male;
-  int height = 180;
-  int weight = 55;
-  int age = 25;
+class _HomePageState extends State<HomePage> {
+  PersonInfmation persionInfo = PersonInfmation(
+      gender: GenderEnum.male, height: 180, weight: 55, age: 25);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +35,7 @@ class _InputPageState extends State<InputPage> {
                         color: kCardBackgroundActiveColor,
                         child: GenderCardIcon(
                           cardGender: GenderEnum.male,
-                          activeGender: gender,
+                          activeGender: persionInfo.gender,
                         ),
                       ),
                     ),
@@ -43,7 +45,7 @@ class _InputPageState extends State<InputPage> {
                         color: kCardBackgroundActiveColor,
                         child: GenderCardIcon(
                           cardGender: GenderEnum.female,
-                          activeGender: gender,
+                          activeGender: persionInfo.gender,
                         ),
                       ),
                     )
@@ -66,7 +68,7 @@ class _InputPageState extends State<InputPage> {
                         textBaseline: TextBaseline.alphabetic,
                         children: <Widget>[
                           Text(
-                            height.toString(),
+                            persionInfo.height.toString(),
                             style: TextStyle(
                               fontSize: 60,
                               color: kTextActiveColor,
@@ -96,10 +98,10 @@ class _InputPageState extends State<InputPage> {
                           child: Slider(
                             min: 80,
                             max: 300,
-                            value: height.toDouble(),
+                            value: persionInfo.height.toDouble(),
                             onChanged: (double value) {
                               setState(() {
-                                height = value.round();
+                                persionInfo.height = value.round();
                               });
                             },
                             activeColor: kButtonColor,
@@ -131,7 +133,7 @@ class _InputPageState extends State<InputPage> {
                               height: 0.0,
                             ),
                             Text(
-                              weight.toString(),
+                              persionInfo.weight.toString(),
                               style: TextStyle(
                                 color: kTextActiveColor,
                                 fontSize: 60,
@@ -179,7 +181,7 @@ class _InputPageState extends State<InputPage> {
                               height: 0.0,
                             ),
                             Text(
-                              age.toString(),
+                              persionInfo.age.toString(),
                               style: TextStyle(
                                 color: kTextActiveColor,
                                 fontSize: 60,
@@ -215,7 +217,11 @@ class _InputPageState extends State<InputPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  print("Tapped calc");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ResultPage(personInfo: persionInfo)));
                 },
                 child: Container(
                   color: kButtonColor,
@@ -239,31 +245,33 @@ class _InputPageState extends State<InputPage> {
 
   void _changeGender() {
     setState(() {
-      gender = gender == GenderEnum.male ? GenderEnum.female : GenderEnum.male;
+      persionInfo.gender = persionInfo.gender == GenderEnum.male
+          ? GenderEnum.female
+          : GenderEnum.male;
     });
   }
 
   void addWeight() {
     setState(() {
-      weight += 1;
+      persionInfo.weight += 1;
     });
   }
 
   void removeWeight() {
     setState(() {
-      weight -= 1;
+      persionInfo.weight -= 1;
     });
   }
 
   void addAge() {
     setState(() {
-      age += 1;
+      persionInfo.age += 1;
     });
   }
 
   void removeAge() {
     setState(() {
-      age -= 1;
+      persionInfo.age -= 1;
     });
   }
 }
